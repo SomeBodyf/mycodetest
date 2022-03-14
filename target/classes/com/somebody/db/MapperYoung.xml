@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace = "com.somebody.db.MapperYoung">
+	<insert id = "is" parameterType = "beans.Centers">
+	insert into kmasters.ct (CTCODE,CTNAME,CTADDRESS,CTCEO,CTNUMBER) values('3000','24','42','42','42') 
+	</insert>
+	<select id="goodsList" resultType = "beans.Equipments" parameterType = "beans.Equipments">
+		select * from kmasters.GoodsView where ctCode = ${ctCode}
+	</select>
+	<select id="searchGoods" resultType = "beans.Equipments" parameterType = "beans.Equipments">
+		select * from kmasters.GoodsView where ctCode = '${ctCode}' and ${eqCaCode} = '${eqCaName}'
+	</select>
+	<select id="getGoCaList" resultType = "beans.Equipments">
+		select cacode as eqCaCode , caname as eqCaName from kmasters.ca where cacode like 'E_'
+	</select>
+	<select id="getGoSfList" resultType = "beans.Equipments">
+		select sfcode as sfCode , sfname as sfName from kmasters.sf where sfctcode = ${ctCode}
+	</select>
+	<select id="getGoStList" resultType = "beans.Equipments">
+		select stcode as stCode , stname as stName from kmasters.st where stcode like 'E_'
+	</select>
+	<update id="modGoods" parameterType = "beans.Equipments">
+		update kmasters.eq set eqcacode = '${eqCaCode}' , eqname = '${eqName}' where eqctcode = '${ctCode}' and eqcode = '${eqCode}'
+	</update>
+	<update id="modGoodsMg" parameterType = "beans.Equipments">	
+		update kmasters.eg set egsfcode = '${sfCode}' , egstcode = '${stCode}', egdate = to_char(sysdate,'YYYYMMDD') where egeqctcode = '${ctCode}' and  egeqcode = '${eqCode}'
+	</update>
+	<select id="getGoodsCodeE1" resultType = "beans.Equipments" parameterType = "beans.Equipments">
+		select Max(eqcode)+1 as eqCode, eqcacode as eqCaCode from kmasters.eq where eqcacode = 'E1' and eqctcode = ${ctCode} group by eqcacode
+	</select>
+	<select id="getGoodsCodeE2" resultType = "beans.Equipments" parameterType = "beans.Equipments">
+		select Max(eqcode)+1 as eqCode, eqcacode as eqCaCode from kmasters.eq where eqcacode = 'E2' and eqctcode = ${ctCode} group by eqcacode
+	</select>
+	<select id="getGoodsCodeE3" resultType = "beans.Equipments" parameterType = "beans.Equipments">
+		select Max(eqcode)+1 as eqCode, eqcacode as eqCaCode from kmasters.eq where eqcacode = 'E3' and eqctcode = ${ctCode} group by eqcacode
+	</select>
+	<insert id="inseq" parameterType = "beans.Equipments">
+		insert into kmasters.eq(eqctcode,eqcode,eqcacode,eqname) VALUES('${ctCode}','${eqCode}','${eqCaCode}','${eqName}')
+	</insert>
+	<insert id="inseg" parameterType = "beans.Equipments">
+		insert into kmasters.eg(egeqctcode,egeqcode,egsfcode,egstcode) values('${ctCode}','${eqCode}','${sfCode}','${stCode}')
+	</insert>
+	
+</mapper>
